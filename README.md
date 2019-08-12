@@ -64,7 +64,8 @@ docker restart kc-idp
 ### Flask app setup
 Create virtualenv
 ```bash
-
+git clone git@github.com:binc75/oidcFlask.git
+cd oidcFlask/
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt --no-cache
