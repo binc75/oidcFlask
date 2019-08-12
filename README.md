@@ -73,4 +73,6 @@ source env/bin/activate
 pip install -r requirements.txt --no-cache
 ./mypyapp.py
 ```
-...go and visit http://localhost:5000 ! (user: nbianchi, pass: abc123 or user: ppallino, pass:test1 if you used the script **kc_user_add.py**)
+...go and visit http://localhost:5000 ! 
+
+(user: nbianchi, pass: abc123 or user: ppallino, pass:test1 if you used the script **kc_user_add.py**)
