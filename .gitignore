@@ -1,0 +1,26 @@
+# ignore all logs
+*.log
+
+# ignore all tmp directories
+**/tmp
+
+# ignore all output directories
+**/output
+
+# ignore all swp files
+*.swp
+
+# ignore all __pycache__ directories
+**/__pycache__
+
+# ignore password/ini files
+config.ini
+
+# ignore xlsx generadet files
+*.xlsx
+
+# ignore html generadet files
+*.html
+
+# ignore venv dirs
+**/env
