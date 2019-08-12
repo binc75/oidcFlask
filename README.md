@@ -61,6 +61,7 @@ Create a new user for testing
 docker exec kc-idp /opt/jboss/keycloak/bin/add-user-keycloak.sh -u nbianchi -p abc123 -r master
 docker restart kc-idp
 ```
+...alternatively you can also use the script **kc_user_add.py**
 
 ### Flask app setup
 Create virtualenv
