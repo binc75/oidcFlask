@@ -1,5 +1,5 @@
 ## OpenID Connect Playground
-Little POC about OpenID Connect and OAuth 2.0 written in python3
+Little POC about OpenID Connect and OAuth 2.0 using KeyCloak and Python3
 
 ## Setup
 ### KeyCloak
