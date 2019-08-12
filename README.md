@@ -70,5 +70,6 @@ cd oidcFlask/
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt --no-cache
-
+./mypyapp.py
 ```
+...go and visit http://localhost:5000 !
