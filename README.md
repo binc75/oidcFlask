@@ -23,7 +23,8 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 7c7b2d8b513a        jboss/keycloak      "/opt/jboss/tools/do…"   7 seconds ago       Up 5 seconds        0.0.0.0:7777->8080/tcp   kc-idp
 ```
 
-Now that KeyCloak is up and running we will configure the client (our python app)
+Now we will configure the client (our python app) into KeyCloak
+
 Create a file called **keycloak-setup.sh** with the following content:
 ``` bash
 #!/bin/sh
