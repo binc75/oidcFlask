@@ -12,7 +12,7 @@
 import requests
 import json
 import jwt
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, render_template, redirect, url_for
 from flask_oidc import OpenIDConnect
 from oauth2client.client import OAuth2Credentials
 
@@ -46,10 +46,10 @@ def app_route():
 
     if oidc.user_loggedin:
         message = 'Hi {}! You are logged in'.format(oidc.user_getfield('preferred_username'))
-        return message
+        return render_template('index.html', message=message)
     else:
-        message = 'Not logged in yet, <a href="/login">Log in</a>'
-        return message
+        message = 'Not logged in yet!'
+        return render_template('index.html', message=message, login=True)
 
 
 
@@ -82,22 +82,13 @@ def login():
     jwt_data = jwt.decode(jwt_token, app.config['SECRET_KEY'], verify=False)
     print(jwt_data)
 
-    message = '''Hi {}, here below the information about you given by the IdP<br><br>
-                 e-mail: {}<br>
-                 userID: {}<br><br>
-                 scopes: {}<br><br>
-                 access token:<br> {}<br><br>
-                 jwt_token:<br> {}<br>
-                 <br>
-                 <br>
-                 curl to access the api:<br> curl -s -H "Content-Type: application/json" -H "Authorization: Bearer {}" http://localhost:5000/api
-                 <br>
-                <ul>
-                 <li><a href="/">Home</a></li>
-                 <li><a href="//localhost:8080/auth/realms/master/account?referrer=mypyapp&referrer_uri=http://localhost:5000/login&">IdP Account Management</a></li>
-                </ul>
-              '''.format(username, email, user_id, scopes, str(access_token), json.dumps(jwt_data, indent=2), str(access_token))
-    return message
+    # Dictinary to pass to the rendered page
+    data = {"username": username, "e-mail": email, "userId": user_id, "scopes": scopes, "access_token": str(access_token), "jwt": jwt_data}
+
+    # Generating curl string to pass to the rendered page
+    curl_string = 'curl -s -H "Content-Type: application/json" -H "Authorization: Bearer {}" http://localhost:5000/api'.format(access_token)
+
+    return render_template('login.html', username=username, data=data, curl=curl_string)
 
 
 ## REST API endpoint
@@ -107,6 +98,15 @@ def api():
     '''OAuth 2.0 protected API endpoint accessible w/ AccessToken'''
 
     return jsonify({'message': 'Welcome to the protected API'})
+
+
+## Logout
+@app.route('/logout')
+def logout():
+    '''Performs local logout by removing the session cookie.'''
+
+    oidc.logout()
+    return redirect(url_for('app_route'))
 
 
 # Initialize main app
