@@ -20,7 +20,7 @@ config.ini
 *.xlsx
 
 # ignore html generadet files
-*.html
+#*.html
 
 # ignore venv dirs
 **/env
