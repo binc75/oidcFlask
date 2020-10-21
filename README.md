@@ -28,7 +28,6 @@ We need to copy the script to the Docker container and run it
 ``` bash
 git clone git@github.com:binc75/oidcFlask.git
 cd oidcFlask/
-chmod 755 keycloak-setup.sh
 docker cp keycloak-setup.sh kc-idp:/opt/jboss/keycloak-setup.sh
 docker exec kc-idp /opt/jboss/keycloak-setup.sh
 
@@ -36,7 +35,7 @@ docker exec kc-idp /opt/jboss/keycloak-setup.sh
 export APP_TOKEN=$(docker exec kc-idp /opt/jboss/keycloak/bin/kcreg.sh get "mypyapp" --server http://localhost:8080/auth  --realm master | jq -r '.secret')
 ```
 
-# Create app configuration file
+### Create app configuration file
 ```bash
 cat client_secrets-template.json | envsubst > client_secrets.json 
 ```
