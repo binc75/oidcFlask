@@ -31,14 +31,16 @@ cd oidcFlask/
 chmod 755 keycloak-setup.sh
 docker cp keycloak-setup.sh kc-idp:/opt/jboss/keycloak-setup.sh
 docker exec kc-idp /opt/jboss/keycloak-setup.sh
+
+# Get secret TOKEN for client
+export APP_TOKEN=$(docker exec kc-idp /opt/jboss/keycloak/bin/kcreg.sh get "mypyapp" --server http://localhost:8080/auth  --realm master | jq -r '.secret')
 ```
----
-**IMPORTANT**
 
-Keep note of the output returned, this must be used in the **client_secret.json** file
-(ie. 7747b4ea-e877-40c6-a987-2de6c931d52c)
+# Create app configuration file
+```bash
+cat client_secrets-template.json | envsubst > client_secrets.json 
+```
 
----
 Create a new user for testing
 ```bash
 docker exec kc-idp /opt/jboss/keycloak/bin/add-user-keycloak.sh -u nbianchi -p abc123 -r master

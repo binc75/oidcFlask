@@ -24,3 +24,5 @@ config.ini
 
 # ignore venv dirs
 **/env
+
+client_secrets.json
