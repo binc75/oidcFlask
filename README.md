@@ -23,39 +23,20 @@ CONTAINER ID        IMAGE               COMMAND                  CREATED        
 7c7b2d8b513a        jboss/keycloak      "/opt/jboss/tools/do…"   7 seconds ago       Up 5 seconds        0.0.0.0:7777->8080/tcp   kc-idp
 ```
 
-Now we will configure the client (our python app) into KeyCloak
-
-Create a file called **keycloak-setup.sh** with the following content:
+Now we will configure the client (our python app) into KeyCloak  
+We need to copy the script to the Docker container and run it
 ``` bash
-#!/bin/sh
-
-# User creation in the master realm
-keycloak/bin/kcreg.sh config credentials \
-  --server http://localhost:8080/auth \
-  --realm master \
-  --user user \
-  --password password
-
-# Create the configuraition for the client app
-keycloak/bin/kcreg.sh create \
-  --server http://localhost:8080/auth \
-  --realm master \
-  -s clientId="mypyapp" \
-  -s 'redirectUris=["http://localhost:5000/*", "http://127.0.0.1:5000"]'
-
-# Check the conf and get back the secret for the client app
-keycloak/bin/kcreg.sh get "mypyapp" --server http://localhost:8080/auth  --realm master | jq '.secret'
-```
-
-Now we need to copy the script to the Docker container and run it
-``` bash
+git clone git@github.com:binc75/oidcFlask.git
+cd oidcFlask/
+chmod 755 keycloak-setup.sh
 docker cp keycloak-setup.sh kc-idp:/opt/jboss/keycloak-setup.sh
-docker exec kc-idp chmod 750 /opt/jboss/keycloak-setup.sh
 docker exec kc-idp /opt/jboss/keycloak-setup.sh
 ```
+---
+**NOTE**
 Keep note of the output returned, this must be used in the **client_secret.json** file
 (ie. 7747b4ea-e877-40c6-a987-2de6c931d52c)
-
+---
 Create a new user for testing
 ```bash
 docker exec kc-idp /opt/jboss/keycloak/bin/add-user-keycloak.sh -u nbianchi -p abc123 -r master
@@ -66,8 +47,6 @@ docker restart kc-idp
 ### Flask app setup
 Create virtualenv
 ```bash
-git clone git@github.com:binc75/oidcFlask.git
-cd oidcFlask/
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt --no-cache

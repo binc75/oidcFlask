@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd /opt/jboss
+
 # User creation in the master realm
 keycloak/bin/kcreg.sh config credentials \
           --server http://localhost:8080/auth \
@@ -15,5 +17,5 @@ keycloak/bin/kcreg.sh create \
   -s 'redirectUris=["http://localhost:5000/*", "http://127.0.0.1:5000/*"]'
 
 # Check the conf and get back the secret for the client app
-keycloak/bin/kcreg.sh get "mypyapp" --server http://localhost:8080/auth  --realm master | jq '.secret'
+keycloak/bin/kcreg.sh get "mypyapp" --server http://localhost:8080/auth  --realm master | grep '"secret"'
 
