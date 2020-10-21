@@ -33,8 +33,8 @@ docker cp keycloak-setup.sh kc-idp:/opt/jboss/keycloak-setup.sh
 docker exec kc-idp /opt/jboss/keycloak-setup.sh
 ```
 ---
+**IMPORTANT**
 
-**NOTE**
 Keep note of the output returned, this must be used in the **client_secret.json** file
 (ie. 7747b4ea-e877-40c6-a987-2de6c931d52c)
 
