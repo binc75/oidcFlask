@@ -58,3 +58,9 @@ pip install -r requirements.txt --no-cache
 ...go and visit http://localhost:5000 ! 
 
 (user: nbianchi, pass: abc123 or user: ppallino, pass:test1 if you used the script **kc_user_add.py**)
+
+### Get Autorization server public key 
+...to validate JWT on jwt.io
+```bash
+curl -s http://localhost:8080/auth/realms/master/ | jq -r .public_key
+```

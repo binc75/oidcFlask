@@ -79,7 +79,7 @@ def login():
             print("Can not extract token info")
 
     # decode jwt
-    jwt_data = jwt.decode(jwt_token, app.config['SECRET_KEY'], verify=False)
+    jwt_data = jwt.decode(jwt_token, app.config['SECRET_KEY'], verify=False, algorithms=['HS256'])
     print(jwt_data)
 
     # Dictinary to pass to the rendered page
