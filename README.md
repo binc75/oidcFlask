@@ -66,3 +66,6 @@ pip install -r requirements.txt --no-cache
 ```bash
 curl -s http://localhost:8080/auth/realms/master/ | jq -r .public_key
 ```
+
+## Keycloak 
+If you wanna snoop into keycloak visit http://localhost:8080 (user: "users", pass: "password')
