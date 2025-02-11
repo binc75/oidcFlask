@@ -10,10 +10,10 @@ Here below the necessary steps to setup our IdP:
 
 ```bash
 docker run -p 8080:8080 --name kc-idp \
-  -e KEYCLOAK_USER=user \
-  -e KEYCLOAK_PASSWORD=password \
+  -e KC_BOOTSTRAP_ADMIN_USERNAME=user \
+  -e KC_BOOTSTRAP_ADMIN_PASSWORD=password \
   -e DB_VENDOR=H2 \
-  -d jboss/keycloak
+  -d keycloak/keycloak start-dev
 ```
 
 Check if KeyCloak is up&running
@@ -28,11 +28,12 @@ We need to copy the script to the Docker container and run it
 ``` bash
 git clone git@github.com:binc75/oidcFlask.git
 cd oidcFlask/
-docker cp keycloak-setup.sh kc-idp:/opt/jboss/keycloak-setup.sh
-docker exec kc-idp /opt/jboss/keycloak-setup.sh
+docker cp keycloak-setup.sh kc-idp:/opt/keycloak/keycloak-setup.sh
+docker exec kc-idp /opt/keycloak/keycloak-setup.sh 
+# you can ignore the output of the above script execution, it will be fine ;-)
 
 # Get secret TOKEN for client
-export APP_TOKEN=$(docker exec kc-idp /opt/jboss/keycloak/bin/kcreg.sh get "mypyapp" --server http://localhost:8080/auth  --realm master | jq -r '.secret')
+export APP_TOKEN=$(docker exec kc-idp /opt/keycloak/bin/kcreg.sh get mypyapp --realm master --server http://localhost:8080 --user user --password password | jq -r '.secret')
 ```
 
 ### Create app configuration file
@@ -42,7 +43,8 @@ cat client_secrets-template.json | envsubst > client_secrets.json
 
 Create a new user for testing
 ```bash
-docker exec kc-idp /opt/jboss/keycloak/bin/add-user-keycloak.sh -u nbianchi -p abc123 -r master
+docker exec kc-idp /opt/keycloak/bin/kcadm.sh create users --server http://localhost:8080 --realm master --user user --password password -s username=nbianchi  -s enabled=true
+docker exec kc-idp /opt/keycloak/bin/kcadm.sh set-password --username nbianchi --new-password abc123 --server http://localhost:8080 --realm master --user user --password password 
 docker restart kc-idp
 ```
 ...alternatively you can also use the script **kc_user_add.py**

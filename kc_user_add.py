@@ -9,7 +9,7 @@ import json
 
 # Get Admin token
 payload = { 'username': 'user', 'password': 'password', 'grant_type': 'password', 'client_id': 'admin-cli'}
-resp = requests.post('http://localhost:8080/auth/realms/master/protocol/openid-connect/token', data=payload)
+resp = requests.post('http://localhost:8080/realms/master/protocol/openid-connect/token', data=payload)
 token = resp.json()['access_token']
 
 
@@ -24,7 +24,7 @@ payload = {
             "credentials":[{"type":"password","value":"test1"}]
           }
 
-resp = requests.post('http://localhost:8080/auth/admin/realms/master/users', data=json.dumps(payload), headers=headers)
+resp = requests.post('http://localhost:8080/admin/realms/master/users', data=json.dumps(payload), headers=headers)
 
 if resp.status_code == 201:
     print('User succesfully created!')
